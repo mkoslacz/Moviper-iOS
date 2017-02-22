@@ -8,8 +8,6 @@ extension Module {
         }
     }
 
-    //test
-
     func push(from navController: UINavigationController?) {
         if let viewController = viewController {
             navController?.pushViewController(viewController, animated: true)
