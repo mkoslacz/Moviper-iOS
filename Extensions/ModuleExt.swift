@@ -2,7 +2,7 @@ import UIKit
 
 extension Module {
     func present(from fromVC: UIViewController?, style: UIModalTransitionStyle) {
-        if let viewController = viewController {
+        if let viewController = fromVC {
             viewController.modalTransitionStyle = style
             fromVC?.present(viewController, animated: true, completion: nil)
         }
