@@ -9,6 +9,5 @@
 import Foundation
 
 protocol BaseRxPresenterInterface {
-
     func viewIsReady()
 }

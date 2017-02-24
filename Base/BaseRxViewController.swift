@@ -10,11 +10,11 @@ import UIKit
 
 class BaseRxViewController<PresenterType: BaseRxPresenterInterface>: UIViewController {
 
-    var presenter: PresenterType!
+    var presenter: PresenterType?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        presenter.viewIsReady()
+        presenter?.viewIsReady()
     }
 }
