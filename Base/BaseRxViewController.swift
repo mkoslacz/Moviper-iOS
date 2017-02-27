@@ -15,7 +15,7 @@ class BaseRxViewController: UIViewController, ViperRxView {
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter = createPresenter()
-        presenter?.attach(view: self)
+        presenter?.attach(viperView: self)
     }
     
     deinit {

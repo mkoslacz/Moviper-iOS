@@ -21,9 +21,9 @@ class BaseRxPresenter
         self.routing = createRouting()
         self.interactor = createInteractor()
     }
-    
-    func attach(view: ViperRxView) {
-        self.view = view as! ViewType
+
+    func attach(viperView: ViperRxView) {
+        self.view = viperView as! ViewType
         routing?.attach(viewController: view as! UIViewController)
         interactor?.attach()
     }
