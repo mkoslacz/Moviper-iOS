@@ -8,6 +8,13 @@
 
 import Foundation
 
-class BaseRxRouting {
+class BaseRxRouting: ViperRxRouting {
     
+    func attach() {
+        
+    }
+    
+    func detach() {
+        
+    }
 }

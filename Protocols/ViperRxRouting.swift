@@ -10,4 +10,7 @@ import Foundation
 
 protocol ViperRxRouting {
 
+    func attach()
+    
+    func detach()
 }

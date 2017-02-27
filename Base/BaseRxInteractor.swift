@@ -8,6 +8,13 @@
 
 import Foundation
 
-class BaseRxInteractor {
+class BaseRxInteractor: ViperRxInteractor {
     
+    func attach() {
+        
+    }
+    
+    func detach() {
+        
+    }
 }

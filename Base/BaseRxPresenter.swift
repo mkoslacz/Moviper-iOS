@@ -8,13 +8,35 @@
 
 import Foundation
 
-class BaseRxPresenter<InteractorType: ViperRxInteractor, RoutingType: ViperRxRouting> {
+class BaseRxPresenter
+    <InteractorType: ViperRxInteractor, RoutingType: ViperRxRouting, ViewType: ViperRxView>
+: ViperRxPresenter {
     
     var interactor: InteractorType?
-    var router: RoutingType?
-
-    init(router: RoutingType, interactor: InteractorType) {
-        self.router = router
-        self.interactor = interactor
+    var routing: RoutingType?
+    var view: ViewType?
+    
+    init() {
+        self.routing = createRouting()
+        self.interactor = createInteractor()
+    }
+    
+    func attach(view: ViperRxView) {
+        self.view = view as! ViewType
+        routing?.attach()
+        interactor?.attach()
+    }
+    
+    func detach() {
+        routing?.detach()
+        interactor?.detach()
+    }
+    
+    func createRouting() -> RoutingType {
+        preconditionFailure("This method must be overridden")
+    }
+    
+    func createInteractor() -> InteractorType {
+        preconditionFailure("This method must be overridden")
     }
 }

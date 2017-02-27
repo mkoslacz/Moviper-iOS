@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol ViperRxView: class {
+protocol ViperRxView {
     
 }
