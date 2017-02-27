@@ -1,5 +1,5 @@
 //
-//  BaseRxRoutingInterface.swift
+//  BaseRxInteractorInterface.swift
 //  videostar
 //
 //  Created by Marek Truszkowski on 24.02.2017.
@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol BaseRxRoutingInterface {
+protocol ViperRxInteractor {
 
 }

@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol BaseRxPresenterInterface {
+protocol ViperRxPresenter {
     func viewIsReady()
 }

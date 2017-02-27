@@ -8,7 +8,7 @@
 
 import Foundation
 
-class BaseRxPresenter<InteractorType: BaseRxInteractorInterface, RoutingType: BaseRxRoutingInterface> {
+class BaseRxPresenter<InteractorType: ViperRxInteractor, RoutingType: ViperRxRouting> {
     
     var interactor: InteractorType?
     var router: RoutingType?

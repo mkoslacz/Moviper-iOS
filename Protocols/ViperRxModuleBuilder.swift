@@ -1,6 +1,13 @@
 import UIKit
 
-extension Module {
+protocol ViperRxModuleBuilder {
+    func present(from fromVC: UIViewController?, style: UIModalTransitionStyle)
+    func push(from navController: UINavigationController?)
+
+    var viewController: UIViewController? { get }
+}
+
+extension ViperRxModuleBuilder {
     func present(from fromVC: UIViewController?, style: UIModalTransitionStyle) {
         if let viewController = fromVC {
             viewController.modalTransitionStyle = style

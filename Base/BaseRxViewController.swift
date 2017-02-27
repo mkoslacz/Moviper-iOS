@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BaseRxViewController<PresenterType: BaseRxPresenterInterface>: UIViewController {
+class BaseRxViewController<PresenterType: ViperRxPresenter>: UIViewController {
 
     var presenter: PresenterType?
 
