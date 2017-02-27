@@ -7,14 +7,17 @@
 //
 
 import Foundation
+import UIKit
 
 class BaseRxRouting: ViperRxRouting {
     
-    func attach() {
-        
+    weak var viewController: UIViewController?
+    
+    func attach(viewController: UIViewController) {
+        self.viewController = viewController
     }
     
     func detach() {
-        
+        self.viewController = nil
     }
 }

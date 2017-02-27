@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class BaseRxPresenter
     <InteractorType: ViperRxInteractor, RoutingType: ViperRxRouting, ViewType: ViperRxView>
@@ -14,7 +15,7 @@ class BaseRxPresenter
     
     var interactor: InteractorType?
     var routing: RoutingType?
-    var view: ViewType?
+    weak var view: ViewType?
     
     init() {
         self.routing = createRouting()
@@ -23,11 +24,12 @@ class BaseRxPresenter
     
     func attach(view: ViperRxView) {
         self.view = view as! ViewType
-        routing?.attach()
+        routing?.attach(viewController: view as! UIViewController)
         interactor?.attach()
     }
     
     func detach() {
+        view = nil
         routing?.detach()
         interactor?.detach()
     }

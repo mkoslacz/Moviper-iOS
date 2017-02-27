@@ -10,7 +10,7 @@ import UIKit
 
 class BaseRxViewController: UIViewController, ViperRxView {
 
-    var presenter: ViperRxPresenter?
+    fileprivate var presenter: ViperRxPresenter?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +18,7 @@ class BaseRxViewController: UIViewController, ViperRxView {
         presenter?.attach(view: self)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
+    deinit {
         presenter?.detach()
     }
     
