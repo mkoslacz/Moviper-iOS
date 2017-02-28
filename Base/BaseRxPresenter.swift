@@ -22,12 +22,18 @@ class BaseRxPresenter
         self.interactor = createInteractor()
     }
 
+    //DI for testing purpose
+    init(routing: RoutingType, interactor: InteractorType) {
+        self.routing = routing
+        self.interactor = interactor
+    }
+
     func attach(viperView: ViperRxView) {
         self.view = viperView as! ViewType
-        routing?.attach(viewController: view as! UIViewController)
+        routing?.attach(viewController: view as? UIViewController)
         interactor?.attach()
     }
-    
+
     func detach() {
         view = nil
         routing?.detach()
