@@ -8,13 +8,21 @@
 
 import UIKit
 
-class BaseRxViewController<PresenterType: BaseRxPresenterInterface>: UIViewController {
+class BaseRxViewController: UIViewController, ViperRxView {
 
-    var presenter: PresenterType!
+    fileprivate var presenter: ViperRxPresenter?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        presenter.viewIsReady()
+        presenter = createPresenter()
+        presenter?.attach(viperView: self)
+    }
+    
+    deinit {
+        presenter?.detach()
+    }
+    
+    func createPresenter() -> ViperRxPresenter {
+        preconditionFailure("This method must be overridden")
     }
 }

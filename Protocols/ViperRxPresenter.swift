@@ -8,7 +8,9 @@
 
 import Foundation
 
-protocol BaseRxPresenterInterface {
-
-    func viewIsReady()
+protocol ViperRxPresenter {
+    
+    func attach(viperView: ViperRxView)
+    
+    func detach()
 }
