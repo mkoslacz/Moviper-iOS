@@ -8,15 +8,20 @@
 
 import Foundation
 import UIKit
+import RxSwift
+
+let DEFAULT_NAME = "default"
+
 
 class BaseRxPresenter
     <InteractorType: ViperRxInteractor, RoutingType: ViperRxRouting, ViewType: ViperRxView>
-: ViperRxPresenter {
-    
+: ViperRxPresenter, Equatable {
+
     let disposeBag = DisposeBag()
     var interactor: InteractorType?
     var routing: RoutingType?
     weak var view: ViewType?
+    let name = DEFAULT_NAME
     
     init() {
         self.routing = createRouting()
@@ -33,9 +38,11 @@ class BaseRxPresenter
         self.view = viperView as! ViewType
         routing?.attach(viewController: view as? UIViewController)
         interactor?.attach()
+        Moviper.sharedInstance.register(presenter: self)
     }
 
     func detach() {
+        Moviper.sharedInstance.unregister(presenter: self)
         view = nil
         routing?.detach()
         interactor?.detach()
@@ -52,4 +59,9 @@ class BaseRxPresenter
     func addSubscription(subscription: Disposable?) {
         if (subscription != nil)  { disposeBag.insert(subscription!) }
     }
+
+    public static func ==(this: BaseRxPresenter, that: BaseRxPresenter) -> Bool {
+        return type(of: this) == type(of: that) && this.name == that.name
+    }
+
 }

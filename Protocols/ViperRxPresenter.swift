@@ -10,6 +10,8 @@ import Foundation
 
 protocol ViperRxPresenter {
     
+    var name: String { get }
+
     func attach(viperView: ViperRxView)
     
     func detach()
