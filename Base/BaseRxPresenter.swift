@@ -13,6 +13,7 @@ class BaseRxPresenter
     <InteractorType: ViperRxInteractor, RoutingType: ViperRxRouting, ViewType: ViperRxView>
 : ViperRxPresenter {
     
+    let disposeBag = DisposeBag()
     var interactor: InteractorType?
     var routing: RoutingType?
     weak var view: ViewType?
@@ -46,5 +47,9 @@ class BaseRxPresenter
     
     func createInteractor() -> InteractorType {
         preconditionFailure("This method must be overridden")
+    }
+
+    func addSubscription(subscription: Disposable?) {
+        if (subscription != nil)  { disposeBag.insert(subscription!) }
     }
 }
