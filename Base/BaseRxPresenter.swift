@@ -12,17 +12,19 @@ import RxSwift
 
 let DEFAULT_NAME = "default"
 
-
 class BaseRxPresenter
     <InteractorType: ViperRxInteractor, RoutingType: ViperRxRouting, ViewType: ViperRxView>
-: ViperRxPresenter, Equatable {
+: ViperRxPresenter {
 
     let disposeBag = DisposeBag()
+
     var interactor: InteractorType?
     var routing: RoutingType?
     weak var view: ViewType?
+
     let name = DEFAULT_NAME
-    
+    let identifier: Int = Int(arc4random())
+
     init() {
         self.routing = createRouting()
         self.interactor = createInteractor()
@@ -47,11 +49,11 @@ class BaseRxPresenter
         routing?.detach()
         interactor?.detach()
     }
-    
+
     func createRouting() -> RoutingType {
         preconditionFailure("This method must be overridden")
     }
-    
+
     func createInteractor() -> InteractorType {
         preconditionFailure("This method must be overridden")
     }
@@ -59,9 +61,4 @@ class BaseRxPresenter
     func addSubscription(subscription: Disposable?) {
         if (subscription != nil)  { disposeBag.insert(subscription!) }
     }
-
-    public static func ==(this: BaseRxPresenter, that: BaseRxPresenter) -> Bool {
-        return type(of: this) == type(of: that) && this.name == that.name
-    }
-
 }
