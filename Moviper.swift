@@ -13,16 +13,17 @@ final class Moviper {
 
     let ipcConcurrentQueue = DispatchQueue(label: "IpcQueue", attributes: .concurrent)
 
-    var presenters = [ViperRxPresenter]()
+    var presenters = [ViperRxPresenter]() //TODO: write and implement thread-safe array
 
     func register(presenter: ViperRxPresenter) {
+        
         //W singletonie trzeba dodawać do array w kolejce serial
         presenters.append(presenter)
     }
 
     func unregister(presenter: ViperRxPresenter) {
         let index =  presenters.index { (containedPresenter) -> Bool in
-            containedPresenter.identifier == presenter.identifier
+            containedPresenter.identifier == presenter.identifier 
         }
 
         if let index = index {
@@ -49,7 +50,7 @@ final class Moviper {
             .asMaybe()
     }
 
-    func getPresenterInstanceOrError<T:ViperRxPresenter>(presenterType: T.Type, presenterName: String) -> Single<T> {
+    func getPresenterInstanceOrError<T: ViperRxPresenter>(presenterType: T.Type, presenterName: String) -> Single<T> {
         return getPresenters(presenterType: presenterType)
             .filter { (presenter: ViperRxPresenter) in
                 presenter.name == presenterName

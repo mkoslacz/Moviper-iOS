@@ -23,7 +23,8 @@ class BaseRxPresenter
     weak var view: ViewType?
 
     let name = DEFAULT_NAME
-    let identifier: Int = Int(arc4random())
+    let identifier: Int = Int(arc4random()) // TODO: UUID.init()
+    
 
     init() {
         self.routing = createRouting()
