@@ -16,7 +16,7 @@ class BaseRxPresenter
     <InteractorType: ViperRxInteractor, RoutingType: ViperRxRouting, ViewType: ViperRxView>
 : ViperRxPresenter {
 
-    let disposeBag = DisposeBag()
+    var compositeDisposable = CompositeDisposable()
 
     var interactor: InteractorType?
     var routing: RoutingType?
@@ -42,6 +42,9 @@ class BaseRxPresenter
         routing?.attach(viewController: view as? UIViewController)
         interactor?.attach()
         Moviper.sharedInstance.register(presenter: self)
+        if compositeDisposable.isDisposed {
+            compositeDisposable = CompositeDisposable()
+        }
     }
 
     func detach() {
@@ -49,8 +52,8 @@ class BaseRxPresenter
         view = nil
         routing?.detach()
         interactor?.detach()
+        compositeDisposable.dispose()
     }
-
     func createRouting() -> RoutingType {
         preconditionFailure("This method must be overridden")
     }
@@ -60,6 +63,6 @@ class BaseRxPresenter
     }
 
     func addSubscription(subscription: Disposable?) {
-        if (subscription != nil)  { disposeBag.insert(subscription!) }
+        if (subscription != nil)  { compositeDisposable.insert(subscription!) }
     }
 }

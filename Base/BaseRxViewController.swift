@@ -23,8 +23,8 @@ class BaseRxViewController: UIViewController, ViperRxView {
 
         presenter?.attach(viperView: self)
     }
-    
-    deinit {
+
+    override func viewDidDisappear(_ animated: Bool) {
         presenter?.detach()
     }
     
