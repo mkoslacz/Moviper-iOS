@@ -8,15 +8,24 @@
 
 import Foundation
 import UIKit
+import RxSwift
+
+let DEFAULT_NAME = "default"
 
 class BaseRxPresenter
     <InteractorType: ViperRxInteractor, RoutingType: ViperRxRouting, ViewType: ViperRxView>
 : ViperRxPresenter {
-    
+
+    var compositeDisposable = CompositeDisposable()
+
     var interactor: InteractorType?
     var routing: RoutingType?
     weak var view: ViewType?
+
+    let name = DEFAULT_NAME
+    let identifier: Int = Int(arc4random()) // TODO: UUID.init()
     
+
     init() {
         self.routing = createRouting()
         self.interactor = createInteractor()
@@ -32,19 +41,28 @@ class BaseRxPresenter
         self.view = viperView as! ViewType
         routing?.attach(viewController: view as? UIViewController)
         interactor?.attach()
+        Moviper.sharedInstance.register(presenter: self)
+        if compositeDisposable.isDisposed {
+            compositeDisposable = CompositeDisposable()
+        }
     }
 
     func detach() {
+        Moviper.sharedInstance.unregister(presenter: self)
         view = nil
         routing?.detach()
         interactor?.detach()
+        compositeDisposable.dispose()
     }
-    
     func createRouting() -> RoutingType {
         preconditionFailure("This method must be overridden")
     }
-    
+
     func createInteractor() -> InteractorType {
         preconditionFailure("This method must be overridden")
+    }
+
+    func addSubscription(subscription: Disposable?) {
+        if (subscription != nil)  { compositeDisposable.insert(subscription!) }
     }
 }

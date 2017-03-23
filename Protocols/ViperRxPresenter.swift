@@ -9,8 +9,11 @@
 import Foundation
 
 protocol ViperRxPresenter {
-    
+
+    var name: String { get }
+    var identifier: Int { get }
+
     func attach(viperView: ViperRxView)
-    
+
     func detach()
 }
