@@ -17,7 +17,8 @@ final class Moviper {
     static let sharedInstance = Moviper()
     private init() {
         registerSynchronizer
-            .subscribeOn(ConcurrentDispatchQueueScheduler(queue: ipcConcurrentQueue))
+            .subscribeOn(SerialDispatchQueueScheduler(queue: ipcConcurrentQueue, internalSerialQueueName: "IpcQueue"))
+            .debug()
             .subscribe(onNext: { moviperBundle in
                 self.route(moviperBundle: moviperBundle)
             }).addDisposableTo(disposeBag)
@@ -40,6 +41,7 @@ final class Moviper {
 
     private func registerSync(presenter: ViperRxPresenter) {
         presenters.append(presenter)
+        print("register: ", presenter.identifier)
     }
 
     private func unregisterSync(presenter: ViperRxPresenter) {
@@ -49,6 +51,7 @@ final class Moviper {
 
         if let index = index {
             self.presenters.remove(at: index)
+            print("unregister: ", presenter.identifier)
         }
     }
 
