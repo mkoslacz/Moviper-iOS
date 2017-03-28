@@ -17,8 +17,7 @@ final class Moviper {
     static let sharedInstance = Moviper()
     private init() {
         registerSynchronizer
-            .subscribeOn(SerialDispatchQueueScheduler(queue: ipcConcurrentQueue, internalSerialQueueName: "IpcQueue"))
-            .debug()
+            .observeOn(SerialDispatchQueueScheduler(queue: ipcConcurrentQueue, internalSerialQueueName: "IpcQueue"))
             .subscribe(onNext: { moviperBundle in
                 self.route(moviperBundle: moviperBundle)
             }).addDisposableTo(disposeBag)
