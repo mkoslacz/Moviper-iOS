@@ -13,6 +13,8 @@ class BaseRxRouting: ViperRxRouting {
     
     weak var viewController: UIViewController?
     
+    init() { }
+    
     func attach(viewController: UIViewController?) {
         self.viewController = viewController
     }
