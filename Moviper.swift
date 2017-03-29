@@ -15,6 +15,13 @@ private struct MoviperBundle {
 final class Moviper {
 
     static let sharedInstance = Moviper()
+
+    let disposeBag = DisposeBag()
+    let ipcConcurrentQueue = DispatchQueue(label: "IpcQueue")
+
+    private var presenters = [ViperRxPresenter]()
+    private let registerSynchronizer = PublishSubject<MoviperBundle>()
+
     private init() {
         registerSynchronizer
             .observeOn(SerialDispatchQueueScheduler(queue: ipcConcurrentQueue, internalSerialQueueName: "IpcQueue"))
@@ -22,13 +29,6 @@ final class Moviper {
                 self.route(moviperBundle: moviperBundle)
             }).addDisposableTo(disposeBag)
     }
-
-    let disposeBag = DisposeBag()
-
-    let ipcConcurrentQueue = DispatchQueue(label: "IpcQueue")
-
-    private var presenters = [ViperRxPresenter]()
-    private let registerSynchronizer = PublishSubject<MoviperBundle>()
 
     private func route(moviperBundle: MoviperBundle) {
         if moviperBundle.register {
@@ -40,7 +40,6 @@ final class Moviper {
 
     private func registerSync(presenter: ViperRxPresenter) {
         presenters.append(presenter)
-        print("register: ", presenter.identifier)
     }
 
     private func unregisterSync(presenter: ViperRxPresenter) {
@@ -50,7 +49,6 @@ final class Moviper {
 
         if let index = index {
             self.presenters.remove(at: index)
-            print("unregister: ", presenter.identifier)
         }
     }
 
@@ -62,7 +60,7 @@ final class Moviper {
         registerSynchronizer.onNext(MoviperBundle(presenter: presenter, register: false))
     }
 
-    func getPresenters<T: ViperRxPresenter>(presenterType: T.Type) -> Observable<T> {
+    private func getPresenters<T: ViperRxPresenter>(presenterType: T.Type) -> Observable<T> {
         return Observable.from(presenters)
             .filter { (presenter: ViperRxPresenter) in
                 type(of: presenter) == presenterType
