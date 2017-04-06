@@ -6,32 +6,61 @@
 import Foundation
 import RxSwift
 
+private struct MoviperBundle {
+
+    let presenter: ViperRxPresenter
+    let register: Bool
+}
+
 final class Moviper {
 
     static let sharedInstance = Moviper()
-    private init() {}
 
-    let ipcConcurrentQueue = DispatchQueue(label: "IpcQueue", attributes: .concurrent)
+    let disposeBag = DisposeBag()
+    let ipcConcurrentQueue = DispatchQueue(label: "IpcQueue")
 
-    var presenters = [ViperRxPresenter]() //TODO: write and implement thread-safe array
+    private var presenters = [ViperRxPresenter]()
+    private let registerSynchronizer = PublishSubject<MoviperBundle>()
 
-    func register(presenter: ViperRxPresenter) {
-        
-        //W singletonie trzeba dodawać do array w kolejce serial
+    private init() {
+        registerSynchronizer
+            .observeOn(SerialDispatchQueueScheduler(queue: ipcConcurrentQueue, internalSerialQueueName: "IpcQueue"))
+            .subscribe(onNext: { moviperBundle in
+                self.route(moviperBundle: moviperBundle)
+            }).addDisposableTo(disposeBag)
+    }
+
+    private func route(moviperBundle: MoviperBundle) {
+        if moviperBundle.register {
+            self.registerSync(presenter: moviperBundle.presenter)
+        } else {
+            self.unregisterSync(presenter: moviperBundle.presenter)
+        }
+    }
+
+    private func registerSync(presenter: ViperRxPresenter) {
         presenters.append(presenter)
     }
 
-    func unregister(presenter: ViperRxPresenter) {
-        let index =  presenters.index { (containedPresenter) -> Bool in
-            containedPresenter.identifier == presenter.identifier 
+    private func unregisterSync(presenter: ViperRxPresenter) {
+        let index =  self.presenters.index { (containedPresenter) -> Bool in
+            containedPresenter.identifier == presenter.identifier
         }
 
         if let index = index {
-            presenters.remove(at: index)
+            self.presenters.remove(at: index)
         }
     }
 
-    func getPresenters<T: ViperRxPresenter>(presenterType: T.Type) -> Observable<T> {
+    func register(presenter: ViperRxPresenter) {
+        registerSynchronizer.onNext(MoviperBundle(presenter: presenter, register: true))
+    }
+
+    func unregister(presenter: ViperRxPresenter) {
+        registerSynchronizer.onNext(MoviperBundle(presenter: presenter, register: false))
+    }
+
+    private func getPresenters<T: ViperRxPresenter>(presenterType: T.Type) -> Observable<T> {
         return Observable.from(presenters)
             .filter { (presenter: ViperRxPresenter) in
                 type(of: presenter) == presenterType

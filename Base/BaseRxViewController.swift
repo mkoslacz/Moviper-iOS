@@ -14,8 +14,8 @@ class BaseRxViewController: UIViewController, ViperRxView {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter = createPresenter()
 
+        presenter = createPresenter()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -25,6 +25,8 @@ class BaseRxViewController: UIViewController, ViperRxView {
     }
 
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
         presenter?.detach()
     }
     

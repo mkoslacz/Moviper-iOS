@@ -23,7 +23,7 @@ class BaseRxPresenter
     weak var view: ViewType?
 
     let name = DEFAULT_NAME
-    let identifier: Int = Int(arc4random()) // TODO: UUID.init()
+    let identifier: String = UUID().uuidString
     
 
     init() {
@@ -38,7 +38,7 @@ class BaseRxPresenter
     }
 
     func attach(viperView: ViperRxView) {
-        self.view = viperView as! ViewType
+        self.view = viperView as? ViewType
         routing?.attach(viewController: view as? UIViewController)
         interactor?.attach()
         Moviper.sharedInstance.register(presenter: self)
@@ -63,6 +63,9 @@ class BaseRxPresenter
     }
 
     func addSubscription(subscription: Disposable?) {
-        if (subscription != nil)  { compositeDisposable.insert(subscription!) }
+        guard subscription != nil else {
+            return
+        }
+        _ = compositeDisposable.insert(subscription!)
     }
 }
