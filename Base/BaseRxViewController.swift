@@ -10,27 +10,31 @@ import UIKit
 
 class BaseRxViewController: UIViewController, ViperRxView {
 
-    fileprivate var presenter: ViperRxPresenter?
+    fileprivate var presenters: [ViperRxPresenter] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        presenter = createPresenter()
+        presenters = createPresenters()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        presenter?.attach(viperView: self)
+        for presenter in presenters {
+            presenter.attach(viperView: self)
+        }
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        presenter?.detach()
+        for presenter in presenters {
+            presenter.detach()
+        }
     }
     
-    func createPresenter() -> ViperRxPresenter {
+    func createPresenters() -> [ViperRxPresenter] {
         preconditionFailure("This method must be overridden")
     }
 }
