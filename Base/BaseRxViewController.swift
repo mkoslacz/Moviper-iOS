@@ -7,39 +7,34 @@
 //
 
 import UIKit
-import RxSwift
 
 class BaseRxViewController: UIViewController, ViperRxView {
-    
-    fileprivate var presenter: ViperRxPresenter?
-    private var compositeDisposable = CompositeDisposable()
+
+    fileprivate var presenters: [ViperRxPresenter] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        presenter = createPresenter()
+        presenters = createPresenters()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        presenter?.attach(viperView: self)
+        for presenter in presenters {
+            presenter.attach(viperView: self)
+        }
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        presenter?.detach()
-    }
-    
-    func createPresenter() -> ViperRxPresenter {
-        preconditionFailure("This method must be overridden")
-    }
-    
-    func addSubscription(subscription: Disposable?) {
-        guard subscription != nil else {
-            return
+        for presenter in presenters {
+            presenter.detach()
         }
-        _ = compositeDisposable.insert(subscription!)
+    }
+    
+    func createPresenters() -> [ViperRxPresenter] {
+        preconditionFailure("This method must be overridden")
     }
 }
