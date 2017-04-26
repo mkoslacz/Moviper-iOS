@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import RxSwift
 
 class BaseRxViewController: UIViewController, ViperRxView {
-
+    
     fileprivate var presenter: ViperRxPresenter?
+    private var compositeDisposable = CompositeDisposable()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,5 +34,12 @@ class BaseRxViewController: UIViewController, ViperRxView {
     
     func createPresenter() -> ViperRxPresenter {
         preconditionFailure("This method must be overridden")
+    }
+    
+    func addSubscription(subscription: Disposable?) {
+        guard subscription != nil else {
+            return
+        }
+        _ = compositeDisposable.insert(subscription!)
     }
 }

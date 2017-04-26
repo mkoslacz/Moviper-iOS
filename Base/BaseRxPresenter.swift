@@ -54,6 +54,7 @@ class BaseRxPresenter
         interactor?.detach()
         compositeDisposable.dispose()
     }
+    
     func createRouting() -> RoutingType {
         preconditionFailure("This method must be overridden")
     }
