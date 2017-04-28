@@ -14,9 +14,7 @@ let DEFAULT_NAME = "default"
 
 class BaseRxPresenter
     <InteractorType: ViperRxInteractor, RoutingType: ViperRxRouting, ViewType: ViperRxView>
-: ViperRxPresenter {
-
-    var compositeDisposable = CompositeDisposable()
+: BaseRx, ViperRxPresenter {
 
     var interactor: InteractorType?
     var routing: RoutingType?
@@ -26,7 +24,8 @@ class BaseRxPresenter
     let identifier: String = UUID().uuidString
     
 
-    init() {
+    override init() {
+        super.init()
         self.routing = createRouting()
         self.interactor = createInteractor()
     }
@@ -61,12 +60,5 @@ class BaseRxPresenter
 
     func createInteractor() -> InteractorType {
         preconditionFailure("This method must be overridden")
-    }
-
-    func addSubscription(subscription: Disposable?) {
-        guard subscription != nil else {
-            return
-        }
-        _ = compositeDisposable.insert(subscription!)
     }
 }
