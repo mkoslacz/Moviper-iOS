@@ -7,8 +7,11 @@
 //
 
 import Foundation
+import RxSwift
 
 class BaseRxInteractor: ViperRxInteractor {
+    
+    private var compositeDisposable = CompositeDisposable()
     
     func attach() {
         
@@ -16,5 +19,12 @@ class BaseRxInteractor: ViperRxInteractor {
     
     func detach() {
         
+    }
+    
+    func addSubscription(subscription: Disposable?) {
+        guard subscription != nil else {
+            return
+        }
+        _ = compositeDisposable.insert(subscription!)
     }
 }
