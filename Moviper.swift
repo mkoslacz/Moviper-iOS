@@ -17,14 +17,13 @@ final class Moviper {
     static let sharedInstance = Moviper()
 
     let disposeBag = DisposeBag()
-    let ipcConcurrentQueue = DispatchQueue(label: "IpcQueue")
 
     private var presenters = [ViperRxPresenter]()
     private let registerSynchronizer = PublishSubject<MoviperBundle>()
 
     private init() {
         registerSynchronizer
-            .observeOn(SerialDispatchQueueScheduler(queue: ipcConcurrentQueue, internalSerialQueueName: "IpcQueue"))
+            .observeOn(mainScheduler)
             .subscribe(onNext: { moviperBundle in
                 self.route(moviperBundle: moviperBundle)
             }).addDisposableTo(disposeBag)
@@ -68,7 +67,7 @@ final class Moviper {
             .map { presenter in
                 return presenter as! T
             }
-            .subscribeOn(ConcurrentDispatchQueueScheduler(queue: ipcConcurrentQueue))
+            .subscribeOn(mainScheduler)
     }
 
     func getPresenterInstance<T: ViperRxPresenter>(presenterType: T.Type, presenterName: String) -> Maybe<T> {
