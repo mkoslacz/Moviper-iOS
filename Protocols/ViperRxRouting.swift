@@ -10,8 +10,6 @@ import Foundation
 import UIKit
 
 protocol ViperRxRouting {
-
     func attach(viewController: UIViewController?)
-    
     func detach()
 }

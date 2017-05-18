@@ -10,12 +10,6 @@ import Foundation
 import RxSwift
 
 class BaseRxInteractor: BaseRx, ViperRxInteractor {
-    
-    func attach() {
-        
-    }
-    
-    func detach() {
-        
-    }
+    func attach() { }
+    func detach() { }
 }

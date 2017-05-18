@@ -10,13 +10,14 @@
 import RxSwift
 
 class BaseRx {
-    
     var compositeDisposable = CompositeDisposable()
-    
+//    var disposableBag = DisposeBag()
+
     func addSubscription(subscription: Disposable?) {
         guard subscription != nil else {
             return
         }
         _ = compositeDisposable.insert(subscription!)
+//        subscription?.addDisposableTo(disposableBag)
     }
 }

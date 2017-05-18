@@ -30,7 +30,6 @@ class BaseRxPresenter
         self.interactor = createInteractor()
     }
 
-    //DI for testing purpose
     init(routing: RoutingType, interactor: InteractorType) {
         self.routing = routing
         self.interactor = interactor
@@ -38,7 +37,7 @@ class BaseRxPresenter
 
     func attach(viperView: ViperRxView) {
         self.view = viperView as? ViewType
-        routing?.attach(viewController: view as? UIViewController)
+        routing?.attach(viewController: view as? BaseRxViewController)
         interactor?.attach()
         Moviper.sharedInstance.register(presenter: self)
         if compositeDisposable.isDisposed {

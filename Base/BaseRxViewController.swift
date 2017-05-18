@@ -13,6 +13,8 @@ class BaseRxViewController: UIViewController, ViperRxView {
 
     private var compositeDisposable = CompositeDisposable()
     fileprivate var presenters: [ViperRxPresenter] = []
+    private var isAttached = false
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,17 +25,29 @@ class BaseRxViewController: UIViewController, ViperRxView {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        attach()
+    }
+
+    func attach() {
+        guard !isAttached else {
+            return
+        }
+        isAttached = true
         for presenter in presenters {
             presenter.attach(viperView: self)
         }
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-
+    func detach() {
+        isAttached = false
         for presenter in presenters {
             presenter.detach()
         }
+    }
+
+    deinit {
+        detach()
+        compositeDisposable.dispose()
     }
     
     func createPresenters() -> [ViperRxPresenter] {

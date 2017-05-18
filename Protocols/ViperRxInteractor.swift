@@ -9,8 +9,6 @@
 import Foundation
 
 protocol ViperRxInteractor {
-
     func attach()
-    
     func detach()
 }
