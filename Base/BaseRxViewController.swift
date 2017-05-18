@@ -11,10 +11,9 @@ import RxSwift
 
 class BaseRxViewController: UIViewController, ViperRxView {
 
-    private var compositeDisposable = CompositeDisposable()
-    fileprivate var presenters: [ViperRxPresenter] = []
+    private var disposeBag = DisposeBag()
+    private var presenters: [ViperRxPresenter] = []
     private var isAttached = false
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,10 +24,14 @@ class BaseRxViewController: UIViewController, ViperRxView {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        attach()
+        attachIfNeeded()
     }
 
-    func attach() {
+    deinit {
+        detach()
+    }
+
+    func attachIfNeeded() {
         guard !isAttached else {
             return
         }
@@ -45,18 +48,13 @@ class BaseRxViewController: UIViewController, ViperRxView {
         }
     }
 
-    deinit {
-        detach()
-        compositeDisposable.dispose()
-    }
-    
-    func createPresenters() -> [ViperRxPresenter] {
-        preconditionFailure("This method must be overridden")
-    }
-    
     func addSubscription(subscription: Disposable?) {
         if let subscription = subscription {
-            _ = compositeDisposable.insert(subscription)
+            disposeBag.insert(subscription)
         }
+    }
+
+    func createPresenters() -> [ViperRxPresenter] {
+        preconditionFailure("This method must be overridden")
     }
 }

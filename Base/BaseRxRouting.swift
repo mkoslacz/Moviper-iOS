@@ -10,10 +10,9 @@ import Foundation
 import UIKit
 
 class BaseRxRouting: ViperRxRouting {
-    weak var viewController: UIViewController?
-    
     init() { }
-    
+    weak var viewController: UIViewController?
+
     func attach(viewController: UIViewController?) {
         self.viewController = viewController
     }
