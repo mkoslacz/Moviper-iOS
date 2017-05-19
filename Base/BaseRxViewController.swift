@@ -29,6 +29,7 @@ class BaseRxViewController: UIViewController, ViperRxView {
 
     deinit {
         detach()
+        presenters.removeAll()
     }
 
     func attachIfNeeded() {

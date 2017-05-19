@@ -46,11 +46,13 @@ class BaseRxPresenter
     }
 
     func detach() {
+        compositeDisposable.dispose()
         Moviper.sharedInstance.unregister(presenter: self)
         view = nil
         routing?.detach()
+        routing = nil
         interactor?.detach()
-        compositeDisposable.dispose()
+        interactor = nil
     }
     
     func createRouting() -> RoutingType {
