@@ -12,6 +12,8 @@ private struct MoviperBundle {
     let register: Bool
 }
 
+class Ipc { private init(){} }
+
 final class Moviper {
 
     static let sharedInstance = Moviper()
