@@ -16,8 +16,8 @@ class BaseRxPresenter
     <InteractorType: ViperRxInteractor, RoutingType: ViperRxRouting, ViewType: ViperRxView>
 : BaseRx, ViperRxPresenter {
 
-    var interactor: InteractorType?
-    var routing: RoutingType?
+    var interactor: InteractorType!
+    var routing: RoutingType!
     weak var view: ViewType?
 
     let name = DEFAULT_NAME
@@ -37,8 +37,8 @@ class BaseRxPresenter
 
     func attach(viperView: ViperRxView) {
         self.view = viperView as? ViewType
-        routing?.attach(viewController: view as? BaseRxViewController)
-        interactor?.attach()
+        routing.attach(viewController: view as? BaseRxViewController)
+        interactor.attach()
         Moviper.sharedInstance.register(presenter: self)
         if compositeDisposable.isDisposed {
             compositeDisposable = CompositeDisposable()
@@ -48,8 +48,7 @@ class BaseRxPresenter
     func detach() {
         compositeDisposable.dispose()
         Moviper.sharedInstance.unregister(presenter: self)
-        routing?.detach()
-        interactor?.detach()
+        interactor.detach()
     }
     
     func createRouting() -> RoutingType {
