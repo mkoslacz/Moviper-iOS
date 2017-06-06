@@ -12,7 +12,7 @@ private struct MoviperBundle {
     let register: Bool
 }
 
-class Ipc { private init(){} }
+class Ipc { private init() {} }
 
 final class Moviper {
 
