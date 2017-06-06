@@ -6,7 +6,6 @@
 //  Copyright © 2017 Grupa Wirtualna Polska. All rights reserved.
 //
 
-
 import RxSwift
 
 class BaseRx {

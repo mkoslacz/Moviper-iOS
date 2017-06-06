@@ -23,7 +23,6 @@ class BaseRxPresenter
     let name = DEFAULT_NAME
     let identifier: String = UUID().uuidString
     
-
     override init() {
         super.init()
         self.routing = createRouting()
