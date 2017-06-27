@@ -10,8 +10,6 @@ import Foundation
 import UIKit
 import RxSwift
 
-let DEFAULT_NAME = "default"
-
 class BaseRxPresenter
     <InteractorType: ViperRxInteractor, RoutingType: ViperRxRouting, ViewType: ViperRxView>
 : BaseRx, ViperRxPresenter {

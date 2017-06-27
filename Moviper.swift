@@ -6,6 +6,8 @@
 import Foundation
 import RxSwift
 
+let DEFAULT_NAME = "default"
+
 private struct MoviperBundle {
 
     let presenter: ViperRxPresenter
@@ -14,7 +16,7 @@ private struct MoviperBundle {
 
 class Ipc { private init() {} }
 
-final class Moviper {
+class Moviper {
 
     static let sharedInstance = Moviper()
 
@@ -24,7 +26,7 @@ final class Moviper {
     private var presenters = [ViperRxPresenter]()
     private let registerSynchronizer = PublishSubject<MoviperBundle>()
 
-    private init() {
+    init() {
         registerSynchronizer
             .observeOn(SerialDispatchQueueScheduler(queue: ipcConcurrentQueue, internalSerialQueueName: "IpcQueue"))
             .subscribe(onNext: { moviperBundle in
@@ -73,7 +75,7 @@ final class Moviper {
             .subscribeOn(MainScheduler.instance)
     }
 
-    func getPresenterInstance<T: ViperRxPresenter>(presenterType: T.Type, presenterName: String) -> Maybe<T> {
+    func getPresenterInstance<T: ViperRxPresenter>(presenterType: T.Type, presenterName: String = DEFAULT_NAME) -> Maybe<T> {
         return getPresenters(presenterType: presenterType)
             .filter { (presenter: ViperRxPresenter) in
                 presenter.name == presenterName
@@ -81,7 +83,7 @@ final class Moviper {
             .asMaybe()
     }
 
-    func getPresenterInstanceOrError<T: ViperRxPresenter>(presenterType: T.Type, presenterName: String) -> Single<T> {
+    func getPresenterInstanceOrError<T: ViperRxPresenter>(presenterType: T.Type, presenterName: String = DEFAULT_NAME) -> Single<T> {
         return getPresenters(presenterType: presenterType)
             .filter { (presenter: ViperRxPresenter) in
                 presenter.name == presenterName
