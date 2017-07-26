@@ -12,7 +12,7 @@ import RxSwift
 class BaseRxViewController: UIViewController, ViperRxView {
 
     private var disposeBag = DisposeBag()
-    private var presenters: [ViperRxPresenter] = []
+    var presenters: [ViperRxPresenter] = []
     private var isAttached = false
 
     override func viewDidLoad() {
