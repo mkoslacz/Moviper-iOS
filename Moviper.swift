@@ -18,7 +18,7 @@ class Ipc { private init() {} }
 
 class Moviper {
 
-    static let sharedInstance = Moviper()
+    static var sharedInstance = Moviper()
 
     let disposeBag = DisposeBag()
     let ipcConcurrentQueue = DispatchQueue(label: "IpcQueue")
