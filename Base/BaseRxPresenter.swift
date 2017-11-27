@@ -34,7 +34,7 @@ class BaseRxPresenter
 
     func attach(viperView: ViperRxView) {
         self.view = viperView as? ViewType
-        routing.attach(viewController: view as? BaseRxViewController)
+        routing.attach(viewController: view as? UIViewController)
         interactor.attach()
         Moviper.sharedInstance.register(presenter: self)
         if compositeDisposable.isDisposed {
